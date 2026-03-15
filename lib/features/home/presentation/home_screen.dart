@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungerbox/features/home/presentation/bloc/home_bloc.dart';
+import 'package:hungerbox/features/profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -173,6 +174,16 @@ class _FormWidgetState extends State<FormWidget> {
               context.read<HomeBloc>().add(SearchUsersEvent(query: ""));
             },
             child: Text("Sort"),
+          ),
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const ProfileScreen(),
+                ),
+              );
+            },
+            child: Text("Navigate"),
           ),
         ],
       ),

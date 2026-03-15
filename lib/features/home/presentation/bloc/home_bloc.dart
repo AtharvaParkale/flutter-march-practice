@@ -77,7 +77,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     //     )
     //     .toList();
 
-    users.sort((a,b){
+    users.sort((a, b) {
       return b.id.compareTo(a.id);
     });
 
