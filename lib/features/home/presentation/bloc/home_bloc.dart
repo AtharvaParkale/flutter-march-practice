@@ -71,7 +71,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SearchUsersEvent event,
     Emitter<HomeState> emit,
   ) {
-    users.removeWhere((user) => !user.name.contains(event.query));
+    // final filteredUsers = users
+    //     .where(
+    //       (user) => user.name.toLowerCase().contains(event.query.toLowerCase()),
+    //     )
+    //     .toList();
+
+    users.sort((a,b){
+      return b.id.compareTo(a.id);
+    });
 
     emit(SuccessState(users: users));
   }

@@ -167,6 +167,13 @@ class _FormWidgetState extends State<FormWidget> {
             },
             child: Text("Update"),
           ),
+
+          OutlinedButton(
+            onPressed: () {
+              context.read<HomeBloc>().add(SearchUsersEvent(query: ""));
+            },
+            child: Text("Sort"),
+          ),
         ],
       ),
     );
