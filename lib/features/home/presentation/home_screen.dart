@@ -11,60 +11,105 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+
     context.read<HomeBloc>().add(GetAllUsersEvent());
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+
+        print("Demo");
+        context.read<HomeBloc>().add(LoadMoreUsers());
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Home Screen")),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 15, vertical: 20),
-          child: BlocConsumer<HomeBloc, HomeState>(
-            listener: (context, state) {},
-            buildWhen: (prev, curr) =>
-                curr is LoadingState ||
-                curr is SuccessState ||
-                curr is ErrorState,
-            builder: (context, state) {
-              if (state is LoadingState) {
-                return Text("Loading");
-              } else if (state is SuccessState) {
-                return Column(
-                  children: [
-                    FormWidget(),
-                    SizedBox(height: 20),
-                    Card(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: state.users.length,
-                        itemBuilder: (BuildContext buildContext, int index) {
-                          return ListTile(
-                            leading: Text("${state.users[index].id}"),
-                            title: Text(state.users[index].name),
-                            onTap: () {
-                              context.read<HomeBloc>().add(
-                                DeleteUserEvent(id: state.users[index].id),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
+      // body: SingleChildScrollView(
+      //   child: Padding(
+      //     padding: EdgeInsetsGeometry.symmetric(horizontal: 15, vertical: 20),
+      //     child: BlocConsumer<HomeBloc, HomeState>(
+      //       listener: (context, state) {},
+      //       buildWhen: (prev, curr) =>
+      //           curr is LoadingState ||
+      //           curr is SuccessState ||
+      //           curr is ErrorState,
+      //       builder: (context, state) {
+      //         if (state is LoadingState) {
+      //           return Text("Loading");
+      //         } else if (state is SuccessState) {
+      //           return Column(
+      //             children: [
+      //               FormWidget(),
+      //               SizedBox(height: 20),
+      //               Card(
+      //                 child: ListView.builder(
+      //                   controller: _scrollController,
+      //                   shrinkWrap: true,
+      //                   physics: NeverScrollableScrollPhysics(),
+      //                   itemCount: state.users.length,
+      //                   itemBuilder: (BuildContext buildContext, int index) {
+      //                     return ListTile(
+      //                       leading: Text("${state.users[index].id}"),
+      //                       title: Text(state.users[index].name),
+      //                       onTap: () {
+      //                         context.read<HomeBloc>().add(
+      //                           DeleteUserEvent(id: state.users[index].id),
+      //                         );
+      //                       },
+      //                     );
+      //                   },
+      //                 ),
+      //               ),
+      //               SizedBox(height: 20),
+      //             ],
+      //           );
+      //         } else {
+      //           return Text("Error");
+      //         }
+      //       },
+      //     ),
+      //   ),
+      // ),
+      body: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {},
+        buildWhen: (prev, curr) =>
+        curr is LoadingState ||
+            curr is SuccessState ||
+            curr is ErrorState,
+        builder: (context, state) {
+          if (state is LoadingState) {
+            return Text("Loading");
+          } else if (state is SuccessState) {
+            return  ListView.builder(
+              controller: _scrollController,
+              // shrinkWrap: true,
+              // physics: NeverScrollableScrollPhysics(),
+              itemCount: state.users.length,
+              itemBuilder: (BuildContext buildContext, int index) {
+                return ListTile(
+                  leading: Text("${state.users[index].id}"),
+                  title: Text(state.users[index].name),
+                  onTap: () {
+                    context.read<HomeBloc>().add(
+                      DeleteUserEvent(id: state.users[index].id),
+                    );
+                  },
                 );
-              } else {
-                return Text("Error");
-              }
-            },
-          ),
-        ),
+              },
+            );
+          } else {
+            return Text("Error");
+          }
+        },
       ),
     );
   }

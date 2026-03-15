@@ -30,3 +30,5 @@ class SearchUsersEvent implements HomeEvent {
 
   SearchUsersEvent({required this.query});
 }
+
+class LoadMoreUsers implements HomeEvent {}

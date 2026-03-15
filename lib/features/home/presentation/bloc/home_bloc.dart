@@ -22,6 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<AddUserEvent>(_onAddUserEvent);
     on<UpdateUser>(_onUpdateUser);
     on<SearchUsersEvent>(_onSearchUsersEvent);
+    on<LoadMoreUsers>(_onLoadMoreUsers);
   }
 
   List<User> users = [];
@@ -32,6 +33,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(LoadingState());
     users = await _getUsersUseCase.call(NoParams());
+    // users.addAll(users)
+
+    users = users + users;
 
     if (users.isNotEmpty) {
       emit(SuccessState(users: users));
@@ -80,6 +84,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     users.sort((a, b) {
       return b.id.compareTo(a.id);
     });
+
+    emit(SuccessState(users: users));
+  }
+
+  FutureOr<void> _onLoadMoreUsers(
+    LoadMoreUsers event,
+    Emitter<HomeState> emit,
+  ) {
+    // users.addAll(users);
+
+    users = users + users;
 
     emit(SuccessState(users: users));
   }
