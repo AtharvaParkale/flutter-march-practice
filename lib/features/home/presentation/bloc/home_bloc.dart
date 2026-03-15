@@ -21,6 +21,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<DeleteUserEvent>(_onDeleteUserEvent);
     on<AddUserEvent>(_onAddUserEvent);
     on<UpdateUser>(_onUpdateUser);
+    on<SearchUsersEvent>(_onSearchUsersEvent);
   }
 
   List<User> users = [];
@@ -64,5 +65,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     emit(SuccessState(users: List.from(users)));
+  }
+
+  FutureOr<void> _onSearchUsersEvent(
+    SearchUsersEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    users.removeWhere((user) => !user.name.contains(event.query));
+
+    emit(SuccessState(users: users));
   }
 }

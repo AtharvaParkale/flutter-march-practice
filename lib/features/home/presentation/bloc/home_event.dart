@@ -24,3 +24,9 @@ class UpdateUser implements HomeEvent {
 
   UpdateUser({required this.id, required this.name});
 }
+
+class SearchUsersEvent implements HomeEvent {
+  final String query;
+
+  SearchUsersEvent({required this.query});
+}

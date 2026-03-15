@@ -79,6 +79,7 @@ class FormWidget extends StatefulWidget {
 class _FormWidgetState extends State<FormWidget> {
   final nameController = TextEditingController(text: "");
   final idController = TextEditingController(text: "");
+  final searchQuery = TextEditingController(text: "");
 
   final _formKey = GlobalKey<FormState>();
 
@@ -89,40 +90,55 @@ class _FormWidgetState extends State<FormWidget> {
         children: [
           Text("User Form"),
           SizedBox(height: 15),
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  onChanged: (val) {
-                    setState(() {
-                      nameController.text = val;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null) return "Name filed cannot be empty !";
-                    if (value.isEmpty) {
-                      return "Name filed cannot be empty !";
-                    }
-                  },
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  onChanged: (val) {
-                    setState(() {
-                      idController.text = val;
-                    });
-                  },
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null) return "ID filed cannot be empty !";
-                    if (value.isEmpty) {
-                      return "ID filed cannot be empty !";
-                    }
-                  },
-                ),
-                SizedBox(height: 20),
-              ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        searchQuery.text = val;
+
+                        context.read<HomeBloc>().add(
+                          SearchUsersEvent(query: searchQuery.text),
+                        );
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        nameController.text = val;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) return "Name filed cannot be empty !";
+                      if (value.isEmpty) {
+                        return "Name filed cannot be empty !";
+                      }
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        idController.text = val;
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null) return "ID filed cannot be empty !";
+                      if (value.isEmpty) {
+                        return "ID filed cannot be empty !";
+                      }
+                    },
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
           OutlinedButton(
