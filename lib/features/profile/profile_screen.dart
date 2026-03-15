@@ -24,7 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen>
     });
   }
 
-
   void start() {
     _ticker.start();
   }
@@ -64,13 +63,9 @@ class _ProfileScreenState extends State<ProfileScreen>
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
           Text(
             formatDuration(_elapsed),
-            style: const TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 30),
@@ -78,22 +73,13 @@ class _ProfileScreenState extends State<ProfileScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: start,
-                child: const Text("Start"),
-              ),
+              ElevatedButton(onPressed: start, child: const Text("Start")),
               const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: stop,
-                child: const Text("Stop"),
-              ),
+              ElevatedButton(onPressed: stop, child: const Text("Stop")),
               const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: reset,
-                child: const Text("Reset"),
-              ),
+              ElevatedButton(onPressed: reset, child: const Text("Reset")),
             ],
-          )
+          ),
         ],
       ),
     );
