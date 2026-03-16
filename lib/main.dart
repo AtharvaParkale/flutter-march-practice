@@ -5,6 +5,8 @@ import 'package:hungerbox/features/home/data/repositories/home_repository_impl.d
 import 'package:hungerbox/features/home/domain/usecases/get_users_usecase.dart';
 import 'package:hungerbox/features/home/presentation/bloc/home_bloc.dart';
 import 'package:hungerbox/features/home/presentation/home_screen.dart';
+import 'package:hungerbox/features/profile/profile_screen.dart';
+import 'package:hungerbox/features/profile/screen_two.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +28,8 @@ class MyApp extends StatelessWidget {
             ),
           ); // replace with your bloc
         },
-        child: HomeScreen(), // replace with your page
+        // child: HomeScreen(), // replace with your page
+        child: ScreenTwo(),
       ),
     );
   }
