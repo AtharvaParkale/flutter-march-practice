@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class ScreenTwo extends StatefulWidget {
   const ScreenTwo({super.key});
@@ -7,7 +8,8 @@ class ScreenTwo extends StatefulWidget {
   State<ScreenTwo> createState() => _ScreenTwoState();
 }
 
-class _ScreenTwoState extends State<ScreenTwo> {
+class _ScreenTwoState extends State<ScreenTwo>
+    with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   List<String> quotes = [
     "quote 1",
@@ -29,18 +31,26 @@ class _ScreenTwoState extends State<ScreenTwo> {
     "quote 17",
   ];
 
+  late Ticker ticker;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) {
-        setState(() {
-          quotes = quotes + quotes;
-        });
-      }
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels >=
+    //       _scrollController.position.maxScrollExtent - 200) {
+    //     setState(() {
+    //       quotes = quotes + quotes;
+    //     });
+    //   }
+    // });
+
+    ticker = createTicker((elapsed) {
+      print(elapsed.inSeconds);
     });
+
+    ticker.start();
   }
 
   @override
