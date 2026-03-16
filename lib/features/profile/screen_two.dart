@@ -50,7 +50,7 @@ class _ScreenTwoState extends State<ScreenTwo>
       print(elapsed.inSeconds);
     });
 
-    ticker.start();
+    // ticker.start();
   }
 
   @override

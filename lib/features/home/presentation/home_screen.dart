@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungerbox/features/home/presentation/bloc/home_bloc.dart';
 import 'package:hungerbox/features/profile/screen_two.dart';
+import 'package:hungerbox/main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,8 +11,10 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with RouteAware {
   final ScrollController _scrollController = ScrollController();
+
+
 
   @override
   void initState() {
@@ -29,85 +32,109 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPush() {
+    // Route was pushed onto navigator and is now the topmost route.
+    print('didPush');
+  }
+
+  @override
+  void didPushNext() {
+    // Route was pushed onto navigator and is now the topmost route.
+    print('didPushNext');
+  }
+
+  @override
+  void didPopNext() {
+    // Covering route was popped off the navigator.
+    print('didPopNext');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Home Screen")),
-      // body: SingleChildScrollView(
-      //   child: Padding(
-      //     padding: EdgeInsetsGeometry.symmetric(horizontal: 15, vertical: 20),
-      //     child: BlocConsumer<HomeBloc, HomeState>(
-      //       listener: (context, state) {},
-      //       buildWhen: (prev, curr) =>
-      //           curr is LoadingState ||
-      //           curr is SuccessState ||
-      //           curr is ErrorState,
-      //       builder: (context, state) {
-      //         if (state is LoadingState) {
-      //           return Text("Loading");
-      //         } else if (state is SuccessState) {
-      //           return Column(
-      //             children: [
-      //               FormWidget(),
-      //               SizedBox(height: 20),
-      //               Card(
-      //                 child: ListView.builder(
-      //                   controller: _scrollController,
-      //                   shrinkWrap: true,
-      //                   physics: NeverScrollableScrollPhysics(),
-      //                   itemCount: state.users.length,
-      //                   itemBuilder: (BuildContext buildContext, int index) {
-      //                     return ListTile(
-      //                       leading: Text("${state.users[index].id}"),
-      //                       title: Text(state.users[index].name),
-      //                       onTap: () {
-      //                         context.read<HomeBloc>().add(
-      //                           DeleteUserEvent(id: state.users[index].id),
-      //                         );
-      //                       },
-      //                     );
-      //                   },
-      //                 ),
-      //               ),
-      //               SizedBox(height: 20),
-      //             ],
-      //           );
-      //         } else {
-      //           return Text("Error");
-      //         }
-      //       },
-      //     ),
-      //   ),
-      // ),
-      body: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, state) {},
-        buildWhen: (prev, curr) =>
-            curr is LoadingState || curr is SuccessState || curr is ErrorState,
-        builder: (context, state) {
-          if (state is LoadingState) {
-            return Text("Loading");
-          } else if (state is SuccessState) {
-            return ListView.builder(
-              controller: _scrollController,
-              // shrinkWrap: true,
-              // physics: NeverScrollableScrollPhysics(),
-              itemCount: state.users.length,
-              itemBuilder: (BuildContext buildContext, int index) {
-                return ListTile(
-                  leading: Text("${state.users[index].id}"),
-                  title: Text(state.users[index].name),
-                  onTap: () {
-                    context.read<HomeBloc>().add(
-                      DeleteUserEvent(id: state.users[index].id),
-                    );
-                  },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 15, vertical: 20),
+          child: BlocConsumer<HomeBloc, HomeState>(
+            listener: (context, state) {},
+            buildWhen: (prev, curr) =>
+                curr is LoadingState ||
+                curr is SuccessState ||
+                curr is ErrorState,
+            builder: (context, state) {
+              if (state is LoadingState) {
+                return Text("Loading");
+              } else if (state is SuccessState) {
+                return Column(
+                  children: [
+                    FormWidget(),
+                    SizedBox(height: 20),
+                    Card(
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: state.users.length,
+                        itemBuilder: (BuildContext buildContext, int index) {
+                          return ListTile(
+                            leading: Text("${state.users[index].id}"),
+                            title: Text(state.users[index].name),
+                            onTap: () {
+                              context.read<HomeBloc>().add(
+                                DeleteUserEvent(id: state.users[index].id),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
                 );
-              },
-            );
-          } else {
-            return Text("Error");
-          }
-        },
+              } else {
+                return Text("Error");
+              }
+            },
+          ),
+        ),
       ),
+      // body: BlocConsumer<HomeBloc, HomeState>(
+      //   listener: (context, state) {},
+      //   buildWhen: (prev, curr) =>
+      //   curr is LoadingState || curr is SuccessState || curr is ErrorState,
+      //   builder: (context, state) {
+      //     if (state is LoadingState) {
+      //       return Text("Loading");
+      //     } else if (state is SuccessState) {
+      //       return ListView.builder(
+      //         controller: _scrollController,
+      //         // shrinkWrap: true,
+      //         // physics: NeverScrollableScrollPhysics(),
+      //         itemCount: state.users.length,
+      //         itemBuilder: (BuildContext buildContext, int index) {
+      //           return ListTile(
+      //             leading: Text("${state.users[index].id}"),
+      //             title: Text(state.users[index].name),
+      //             onTap: () {
+      //               context.read<HomeBloc>().add(
+      //                 DeleteUserEvent(id: state.users[index].id),
+      //               );
+      //             },
+      //           );
+      //         },
+      //       );
+      //     } else {
+      //       return Text("Error");
+      //     }
+      //   },
+      // ),
     );
   }
 }
