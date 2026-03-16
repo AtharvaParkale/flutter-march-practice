@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
-
         print("Demo");
         context.read<HomeBloc>().add(LoadMoreUsers());
       }
@@ -82,14 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {},
         buildWhen: (prev, curr) =>
-        curr is LoadingState ||
-            curr is SuccessState ||
-            curr is ErrorState,
+            curr is LoadingState || curr is SuccessState || curr is ErrorState,
         builder: (context, state) {
           if (state is LoadingState) {
             return Text("Loading");
           } else if (state is SuccessState) {
-            return  ListView.builder(
+            return ListView.builder(
               controller: _scrollController,
               // shrinkWrap: true,
               // physics: NeverScrollableScrollPhysics(),
@@ -202,6 +199,20 @@ class _FormWidgetState extends State<FormWidget> {
           ),
           OutlinedButton(
             onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Text("demo");
+                },
+              );
+
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (BuildContext context) {
+              //       return ScreenTwo();
+              //     },
+              //   ),
+              // );
               if (_formKey.currentState!.validate()) {
                 context.read<HomeBloc>().add(
                   UpdateUser(
